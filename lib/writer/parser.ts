@@ -92,12 +92,9 @@ export function parseWhereClause<S extends Schema>(clause: Where<S>) {
                         if (OperatorTransfer[operator]) {
                             const filterValue = value[operator];
                             const raw: RawQuery = OperatorTransfer[operator](filterValue);
-                            // const objectSymbols = Object.getOwnPropertySymbols(raw);
-                            // console.log('real raw', `${key} ${raw[objectSymbols[0]]}`);
-							console.log('real raw', `${key} ${raw[Raw]}`);
                             clauses.push(`${key} ${raw[Raw]}`);
                             parseOperator = true;
-                            break;
+                            continue;
                         }
                     }
                 }
