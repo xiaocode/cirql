@@ -157,6 +157,7 @@ export function openConnection(options: SurrealOptions): SurrealHandle {
 	});
 
 	return {
+		message,
 		close,
 		query,
 		signIn,

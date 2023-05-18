@@ -12,6 +12,7 @@ export interface SurrealOptions {
 }
 
 export interface SurrealHandle {
+	message(method: string, params?: any[]): Promise<any>;
 	close(): void;
 	query(query: string, params?: Record<string, any>): Promise<any>;
 	signIn(credentials: AuthenticationDetails): Promise<string>;
