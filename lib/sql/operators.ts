@@ -271,3 +271,39 @@ export function add(value: SurrealValue): RawQuery {
 export function remove(value: SurrealValue): RawQuery {
 	return raw(`-= ${useSurrealValue(value)}`);
 }
+
+/**
+ * A Map link operator object to operator functions
+ */
+
+export const OperatorTransfer: {
+	[key: string]: (value: SurrealValue) => RawQuery
+} = {
+	'eq': eq,
+	'neq': neq,
+	'eeq': eeq,
+	'any': any,
+	'all': all,
+	'feq': feq,
+	'nfeq': nfeq,
+	'fany': fany,
+	'fall': fall,
+	'lt': lt,
+	'lte': lte,
+	'gt': gt,
+	'gte': gte,
+	'contains': contains,
+	'containsNot': containsNot,
+	'containsAll': containsAll,
+	'containsAny': containsAny,
+	'containsNone': containsNone,
+	'inside': inside,
+	'notInside': notInside,
+	'allInside': allInside,
+	'anyInside': anyInside,
+	'noneInside': noneInside,
+	'outside': outside,
+	'intersects': intersects,
+	'add': add,
+	'remove': remove,
+}

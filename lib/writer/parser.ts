@@ -1,6 +1,8 @@
 import { CirqlError } from "../errors";
 import { isRaw } from "../helpers";
+import { OperatorTransfer } from "../sql/operators";
 import { Raw } from "../symbols";
+import { RawQuery } from "../types";
 import { Schema, Where } from "./types";
 
 const SETTER = ['=', '+=', '-='];
@@ -84,7 +86,24 @@ export function parseWhereClause<S extends Schema>(clause: Where<S>) {
 			if (isRaw(value)) {
 				clauses.push(`${key} ${value[Raw]}`);
 			} else {
-				clauses.push(`${key} = ${value === null ? 'NONE' : JSON.stringify(value)}`);
+				let parseOperator = false;
+                for (const operator in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, operator)) {
+                        if (OperatorTransfer[operator]) {
+                            const filterValue = value[operator];
+                            const raw: RawQuery = OperatorTransfer[operator](filterValue);
+                            // const objectSymbols = Object.getOwnPropertySymbols(raw);
+                            // console.log('real raw', `${key} ${raw[objectSymbols[0]]}`);
+							console.log('real raw', `${key} ${raw[Raw]}`);
+                            clauses.push(`${key} ${raw[Raw]}`);
+                            parseOperator = true;
+                            break;
+                        }
+                    }
+                }
+                if (!parseOperator) {
+                    clauses.push(`${key} = ${value === null ? 'NONE' : JSON.stringify(value)}`);
+                }
 			}
 		}
 	}
